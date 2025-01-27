@@ -1,0 +1,17 @@
+{
+  "type": "module",
+  "name": "ucdavis-stdt-4-jr-app-dev-assesment",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "run": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
