@@ -2,6 +2,7 @@ import cors from "cors";
 import http from "http";
 import express from "express";
 import env from "./config/env.js";
+import {importPersonsData} from "./services/dataSeedService.js";
 
 const app = express();
 
@@ -19,7 +20,8 @@ app.use('/persons');
 
 const server = http.createServer(app);
 
-server.listen(env.port, () => {
-    console.log(`Server is running on port ${env.port}`);
+importPersonsData.then(() => {
+    server.listen(env.port, () => {
+        console.log(`Server is running on port ${env.port}`);
+    });
 });
-
