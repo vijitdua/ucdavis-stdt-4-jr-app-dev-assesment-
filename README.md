@@ -15,7 +15,7 @@ Ensure the following are installed before you continue.
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/vijitdua/https://github.com/vijitdua/ucdavis-stdt-4-jr-app-dev-assesment-
+   git clone https://github.com/vijitdua/ucdavis-stdt-4-jr-app-dev-assesment-
    cd ucdavis-stdt-4-jr-app-dev-assesment-
    ```
 2. **Install dependencies**:
