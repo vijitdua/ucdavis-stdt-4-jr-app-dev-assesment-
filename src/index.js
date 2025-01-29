@@ -17,7 +17,13 @@ app.use(cors(corsOptions));
 app.use(express.json({limit: "10kb"}));
 app.use(express.urlencoded({extended: true, limit: '10kb'}));
 
+// Routes
 app.use('/persons', personsRoutes);
+
+// Error handler
+app.use((err, req, res) => {
+    res.status(500).json({error: `internal server error`});
+});
 
 const server = http.createServer(app);
 
