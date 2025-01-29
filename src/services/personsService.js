@@ -45,14 +45,14 @@ export function getPersonById(id) {
 export function addData(id, firstName, lastName, email, salary) {
     if (!firstName || !lastName || !email || !salary) throw new Error('All fields are required.');
 
-    if (typeof salary !== 'number' || salary <= 0) throw new Error('Salary must be a positive number.');
+    if (Number(salary) <= 0) throw new Error('Salary must be a positive number.');
 
     inMemoryDatabase[id] = {
         Id: id,
         First_Name: firstName,
         Last_Name: lastName,
         Email: email,
-        Salary: parseFloat(salary.toFixed(2)),
+        Salary: parseFloat(Number(salary).toFixed(2)),
     };
 
     return true;
