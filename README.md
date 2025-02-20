@@ -1,6 +1,6 @@
 # UC Davis STDT 4 Jr. Application Developer Assessment — Vijit Dua
 
-This repository is an attempt of an assessment required for the UC Davis STDT 4 Jr. App. Dev. Role and has been uploaded
+This repository is an attempt of an assessment required for the second (& final) stage of the UC Davis STDT 4 Jr. App. Dev. Role application and has been uploaded
 to GitHub as required by the IET for submission. To understand the requirements of the assessment and this project,
 refer to the [Assessment Requirements](./assessment-requirements.pdf).
 
@@ -51,3 +51,6 @@ Ensure the following are installed before you continue.
 - Server errors will be returned with the appropriate status codes and a json with an error field for further details.
 - Data handling errors (such as a failed data import) will be console logged. Failed rows are skipped without stopping
   server initialization.
+
+### Did I get it?
+- 👀 yooo, I got the job lfg
