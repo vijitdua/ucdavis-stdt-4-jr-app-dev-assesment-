@@ -1,8 +1,12 @@
 # UC Davis STDT 4 Jr. Application Developer Assessment — Vijit Dua
 
-This repository is an attempt of an assessment required for the second (& final) stage of the UC Davis STDT 4 Jr. App. Dev. Role application and has been uploaded
+This repository started as an attempt of an assessment required for the second (& final) stage of the UC Davis STDT 4
+Jr. App. Dev. Role application and was uploaded
 to GitHub as required by the IET for submission. To understand the requirements of the assessment and this project,
-refer to the [Assessment Requirements](./assessment-requirements.pdf).
+refer to the [Backend Assessment Requirements](./backend/assessment-requirements.pdf).
+
+This repository has, since then, been modified to slightly improve the backend and create a Vue.js frontend for the same
+backend in an attempt to learn Vue.js for the same job role.
 
 ## Prerequisites
 
@@ -11,19 +15,30 @@ Ensure the following are installed before you continue.
 - [Node.js](https://nodejs.org/en/) (version 23.x or higher)
 - [npm](https://www.npmjs.com/get-npm) (version 10.x or higher)
 
-## Installation
+## Installation (backend and frontend both)
 
 1. **Clone the repository**:
    ```bash
    git clone https://github.com/vijitdua/ucdavis-stdt-4-jr-app-dev-assesment-
    cd ucdavis-stdt-4-jr-app-dev-assesment-
    ```
+   
+   - If working on the backend
+      ```bash
+      cd backend
+      ```
+     
+   - If working on the frontend
+       ```bash
+      cd frontend
+      ```
+   
 2. **Install dependencies**:
    ```bash
    npm install
    ```
 
-## Starting the server
+## Starting the backend server
 
 1. **Ensure `persons.csv` file exists**
 
@@ -46,11 +61,12 @@ Ensure the following are installed before you continue.
     npm start
     ```
 
-### Error handling
+### Error handling (server)
 
 - Server errors will be returned with the appropriate status codes and a json with an error field for further details.
 - Data handling errors (such as a failed data import) will be console logged. Failed rows are skipped without stopping
   server initialization.
 
-### Did I get it?
-- 👀 yooo, I got the job lfg
+### Frontend documentation
+- Minimally documented
+- Basic vite vue.js commands — npm run dev etc.
