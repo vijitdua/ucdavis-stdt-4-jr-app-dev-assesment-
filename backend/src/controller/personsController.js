@@ -10,6 +10,8 @@ import {getAllPersons, getPersonById} from "../services/personsService.js";
 export async function getPersonsController(req, res) {
     try{
         const requestedId = req.params?.id || null;
+        const limit = req.query?.limit || 10;
+        const skip = req.query?.skip || 0;
 
         try{
             if(requestedId){
@@ -19,7 +21,8 @@ export async function getPersonsController(req, res) {
         }catch(error){
             return res.status(404).json({error: `Record with requested id doesn't exist`});
         }
-        const returnData = await getAllPersons().slice(0,10);
+
+        const returnData = await getAllPersons(limit, skip);
 
         return res.status(200).json(returnData);
 

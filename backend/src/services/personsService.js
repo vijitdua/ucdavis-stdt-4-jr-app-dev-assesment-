@@ -10,8 +10,8 @@ import {inMemoryDatabase} from "../models/personsModel.js";
  *   - {number} Salary
  *
  */
-export function getAllPersons() {
-    return Object.values(inMemoryDatabase);
+export function getAllPersons(limit, skip) {
+    return Object.values(inMemoryDatabase).slice(Number(skip), Number(skip) + Number(limit));
 }
 
 /**
