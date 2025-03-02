@@ -1,9 +1,9 @@
 import axios from "axios";
 
-type Person = {
-    Id: number,
+export type Person = {
+    Id: string,
     First_Name: string,
-    Last_name: string,
+    Last_Name: string,
     Email: string,
     Salary: string,
 }
@@ -29,9 +29,11 @@ export async function getPersonsList(limit: number = 10, skip: number = 0): Prom
  * Fetches a singular person from the persons API
  * @param id id of person whose data is to be fetched
  */
-export async function getPersonById(id: number): Promise<Person> {
+export async function getPersonById(id: string): Promise<Person> {
     try {
         const response = await axios.get(`http://localhost:3001/persons/${id}`);
+        console.log(`api response`)
+        console.log(response.data);
         return response.data;
     } catch (error) {
         console.log(`Error occurred in getPersonsList: ${error}`);

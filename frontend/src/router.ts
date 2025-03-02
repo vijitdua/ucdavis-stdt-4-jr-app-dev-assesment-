@@ -1,16 +1,16 @@
 import {createWebHistory, createRouter} from 'vue-router';
 import type {Router} from 'vue-router';
 
-import App from "./App.vue";
 import Persons from "./pages/Persons.vue";
 import Person from "./pages/Person.vue";
+import Home from "./pages/Home.vue";
 
 const routes = [
 
-    { path: '/', component: App },
+    { path: '/', component: Home },
 
     { path: `/persons`, component: Persons},
-    { path: '/persons/:id', component: Person },
+    { path: '/person/:id', component: Person },
 ]
 
 const router: Router = createRouter({
