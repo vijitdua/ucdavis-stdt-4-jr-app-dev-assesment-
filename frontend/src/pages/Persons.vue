@@ -37,16 +37,16 @@ function goToPerson(personId: string) {
 </script>
 
 <template>
-  <div>
-    <p v-if="loading">
+  <v-container>
+    <v-alert v-if="loading" type="info">
       ..loading..
-    </p>
+    </v-alert>
 
-    <p v-else-if="errorFetching" class="error">
+    <v-alert v-else-if="errorFetching" type="error">
       Failed to fetch data...
-    </p>
+    </v-alert>
 
-    <table v-else>
+    <v-table v-else>
       <thead>
       <tr>
         <th>Employee ID</th>
@@ -65,12 +65,17 @@ function goToPerson(personId: string) {
         <td>{{ person.Salary }}</td>
       </tr>
       </tbody>
-    </table>
+    </v-table>
 
-    <button @click="goToPreviousPage" :disabled="pageStore.currentPage === 1">Previous</button>
-    <span>Page {{ pageStore.currentPage }} of 10</span>
-    <button @click="goToNextPage" :disabled="pageStore.currentPage === 10">Next</button>
-  </div>
+    <v-container class="pagination-control">
+      <v-btn color="primary" @click="goToPreviousPage" :disabled="pageStore.currentPage === 1">Previous</v-btn>
+      <v-chip color="primary">
+        {{ pageStore.currentPage }} / 10
+      </v-chip>
+      <v-btn color="primary" @click="goToNextPage" :disabled="pageStore.currentPage === 10">Next</v-btn>
+    </v-container>
+
+  </v-container>
 </template>
 
 <style scoped>
@@ -112,5 +117,13 @@ button {
 
 .pointer-style {
   cursor: pointer;
+}
+
+.pagination-control{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
 }
 </style>
