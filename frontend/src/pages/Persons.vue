@@ -1,20 +1,39 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import { getPersonsList, type Person } from "../services/personsApiService.ts";
+import {ref, watchEffect} from "vue";
+import {getPersonsList, type Person} from "../services/personsApiService.ts";
+import router from "../router.ts";
+import {usePageStore} from "../pinia-store/pageStore.ts";
 
 const persons = ref<Person[]>([]); // Store fetched persons
 const errorFetching = ref(false);
 const loading = ref(true);
+const pageStore = usePageStore();
 
-// (TODO: add page functionality)
-onMounted(async () => {
-  try {
-    persons.value = await getPersonsList(10, 0);
-  } catch (error) {
-    errorFetching.value = true;
-  }
-  loading.value = false;
-});
+// Load employee records
+watchEffect(async () => {
+      loading.value = true;
+      try {
+        persons.value = await getPersonsList(10, pageStore.currentPage - 1);
+      } catch (error) {
+        errorFetching.value = true;
+      }
+      loading.value = false;
+    }
+);
+
+function goToNextPage() {
+  pageStore.setPage(pageStore.currentPage + 1);
+}
+
+function goToPreviousPage() {
+  pageStore.setPage(pageStore.currentPage - 1);
+}
+
+// Redirects you to the individual person page
+function goToPerson(personId: string) {
+  router.push(`/person/${personId}`);
+}
+
 </script>
 
 <template>
@@ -38,7 +57,7 @@ onMounted(async () => {
       </tr>
       </thead>
       <tbody>
-      <tr v-for="person in persons" :key="person.Id">
+      <tr v-for="person in persons" :key="person.Id" @click="goToPerson(person.Id)" class="pointer-style">
         <td>{{ person.Id }}</td>
         <td>{{ person.First_Name }}</td>
         <td>{{ person.Last_Name }}</td>
@@ -47,6 +66,10 @@ onMounted(async () => {
       </tr>
       </tbody>
     </table>
+
+    <button @click="goToPreviousPage" :disabled="pageStore.currentPage === 1">Previous</button>
+    <span>Page {{ pageStore.currentPage }} of 10</span>
+    <button @click="goToNextPage" :disabled="pageStore.currentPage === 10">Next</button>
   </div>
 </template>
 
@@ -83,7 +106,11 @@ p {
   color: gray;
 }
 
-button{
+button {
   margin-top: 10px;
+}
+
+.pointer-style {
+  cursor: pointer;
 }
 </style>
