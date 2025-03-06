@@ -1,25 +1,26 @@
 <script setup lang="ts">
-import {ref, watchEffect} from "vue";
-import {getPersonsList, type Person} from "../services/personsApiService.ts";
 import router from "../router.ts";
 import {usePageStore} from "../pinia-store/pageStore.ts";
+import {storeToRefs} from "pinia";
+import {onMounted} from "vue";
 
-const persons = ref<Person[]>([]); // Store fetched persons
-const errorFetching = ref(false);
-const loading = ref(true);
 const pageStore = usePageStore();
+const {personsPage, loading, errorFetching, currentPage} = storeToRefs(pageStore);
 
-// Load employee records
-watchEffect(async () => {
-      loading.value = true;
-      try {
-        persons.value = await getPersonsList(10, pageStore.currentPage - 1);
-      } catch (error) {
-        errorFetching.value = true;
-      }
-      loading.value = false;
-    }
-);
+const persons = personsPage;
+
+onMounted(() => {
+  pageStore.setPage(currentPage.value);
+});
+
+const headers = [
+  {title: "Employee ID", key: "Id"},
+  {title: "First Name", key: "First_Name"},
+  {title: "Last Name", key: "Last_Name"},
+  {title: "Email", key: "Email"},
+  {title: "Salary", key: "Salary"},
+];
+
 
 function goToNextPage() {
   pageStore.setPage(pageStore.currentPage + 1);
@@ -38,41 +39,40 @@ function goToPerson(personId: string) {
 
 <template>
   <v-container>
-    <v-alert v-if="loading" type="info">
-      ..loading..
+
+    <!--    Loading state  -->
+    <v-progress-circular v-if="loading" indeterminate color="primary" class="center"/>
+
+
+    <v-alert v-else-if="errorFetching" type="error" class="center">
+      Failed to fetch data
     </v-alert>
 
-    <v-alert v-else-if="errorFetching" type="error">
-      Failed to fetch data...
-    </v-alert>
+    <v-data-table
+        :headers="headers"
+        :items="personsPage"
+        item-value="Id"
+        :hide-default-footer="true"
+    >
+      <template v-slot:item="{ item }">
+        <tr @click="goToPerson(item.Id)" class="pointer-style">
+          <td>{{ item.Id }}</td>
+          <td>{{ item.First_Name }}</td>
+          <td>{{ item.Last_Name }}</td>
+          <td>{{ item.Email }}</td>
+          <td>{{ item.Salary }}</td>
+        </tr>
+      </template>
+    </v-data-table>
 
-    <v-table v-else>
-      <thead>
-      <tr>
-        <th>Employee ID</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Email</th>
-        <th>Salary</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="person in persons" :key="person.Id" @click="goToPerson(person.Id)" class="pointer-style">
-        <td>{{ person.Id }}</td>
-        <td>{{ person.First_Name }}</td>
-        <td>{{ person.Last_Name }}</td>
-        <td>{{ person.Email }}</td>
-        <td>{{ person.Salary }}</td>
-      </tr>
-      </tbody>
-    </v-table>
-
-    <v-container class="pagination-control">
-      <v-btn color="primary" @click="goToPreviousPage" :disabled="pageStore.currentPage === 1">Previous</v-btn>
-      <v-chip color="primary">
-        {{ pageStore.currentPage }} / 10
-      </v-chip>
-      <v-btn color="primary" @click="goToNextPage" :disabled="pageStore.currentPage === 10">Next</v-btn>
+    <v-container>
+      <v-row justify="center">
+        <v-col cols="8">
+          <v-container class="max-width">
+            <v-pagination v-model="currentPage" :length="10" class="my-4" @update:model-value="(page) => pageStore.setPage(page)"/>
+          </v-container>
+        </v-col>
+      </v-row>
     </v-container>
 
   </v-container>
@@ -99,12 +99,6 @@ th {
   text-align: left;
 }
 
-.error {
-  color: red;
-  font-weight: bold;
-  margin-top: 10px;
-}
-
 p {
   font-size: 16px;
   font-style: italic;
@@ -119,11 +113,18 @@ button {
   cursor: pointer;
 }
 
-.pagination-control{
+.pagination-control {
   display: flex;
   flex-direction: row;
   justify-content: center;
   gap: 10px;
+  align-items: center;
+}
+
+.center {
+  text-align: center;
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
 </style>

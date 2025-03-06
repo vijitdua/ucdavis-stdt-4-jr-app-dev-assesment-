@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, watchEffect} from "vue";
+import {onMounted, ref} from "vue";
 import {useRoute} from "vue-router";
 import {getPersonById, type Person} from "../services/personsApiService.ts";
 import router from "../router.ts";
@@ -11,7 +11,7 @@ const errorFetching = ref(false)
 const loading = ref(true)
 
 // Change value of person when route changes
-watchEffect(async () => {
+onMounted(async () => {
   personId.value = route.params.id;
   errorFetching.value = false;
   loading.value = true;
