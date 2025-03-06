@@ -32,42 +32,37 @@ function goBack(){
 </script>
 
 <template>
-  <div>
+  <v-container class="d-flex justify-center">
 
-    <p v-if="loading">
-      ..loading..
-    </p>
+    <v-card v-if="!loading && !errorFetching">
+      <v-card-title class="text-h5">{{ personData?.First_Name }} {{ personData?.Last_Name }}</v-card-title>
 
-    <p v-else-if="errorFetching" class="error">
+      <v-card-text>
+        <v-list>
+          <v-list-item>
+            <v-list-item-title><strong>Employee ID:</strong> {{ personData?.Id }}</v-list-item-title>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-title><strong>Email:</strong> ${{ personData?.Email }}</v-list-item-title>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-title><strong>Salary:</strong> ${{ personData?.Salary }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-card-text>
+
+      <v-card-actions>
+        <v-btn color="primary" @click="goBack">⬅️ Go Back</v-btn>
+      </v-card-actions>
+    </v-card>
+
+    <v-progress-circular v-else-if="loading" indeterminate color="primary" class="my-4" />
+
+    <v-alert v-else-if="errorFetching" type="error" class="my-4">
       Failed to fetch data for employee ID {{ personId }}.
-    </p>
+    </v-alert>
 
-    <table v-else>
-      <tbody>
-      <tr>
-        <th>Employee ID</th>
-        <td>{{ personData?.Id }}</td>
-      </tr>
-      <tr>
-        <th>First Name</th>
-        <td>{{ personData?.First_Name }}</td>
-      </tr>
-      <tr>
-        <th>Last Name</th>
-        <td>{{ personData?.Last_Name }}</td>
-      </tr>
-      <tr>
-        <th>Email</th>
-        <td>{{ personData?.Email }}</td>
-      </tr>
-      <tr>
-        <th>Salary</th>
-        <td>{{ personData?.Salary }}</td>
-      </tr>
-      </tbody>
-    </table>
-    <button class="back-button" @click="goBack">⬅️Go Back</button>
-  </div>
+  </v-container>
 </template>
 
 <style scoped>
