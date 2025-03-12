@@ -7,8 +7,6 @@ import {onMounted} from "vue";
 const pageStore = usePageStore();
 const {personsPage, loading, errorFetching, currentPage} = storeToRefs(pageStore);
 
-const persons = personsPage;
-
 onMounted(() => {
   pageStore.setPage(currentPage.value);
 });
@@ -21,15 +19,6 @@ const headers = [
   {title: "Salary", key: "Salary"},
 ];
 
-
-function goToNextPage() {
-  pageStore.setPage(pageStore.currentPage + 1);
-}
-
-function goToPreviousPage() {
-  pageStore.setPage(pageStore.currentPage - 1);
-}
-
 // Redirects you to the individual person page
 function goToPerson(personId: string) {
   router.push(`/person/${personId}`);
@@ -40,18 +29,16 @@ function goToPerson(personId: string) {
 <template>
   <v-container>
 
-    <!--    Loading state  -->
-    <v-progress-circular v-if="loading" indeterminate color="primary" class="center"/>
 
-
-    <v-alert v-else-if="errorFetching" type="error" class="center">
-      Failed to fetch data
+    <v-alert v-if="errorFetching" type="error" class="center" text="Failed to load data" icon="$error">
     </v-alert>
 
     <v-data-table
+        v-else
         :headers="headers"
         :items="personsPage"
         item-value="Id"
+        :loading="loading"
         :hide-default-footer="true"
     >
       <template v-slot:item="{ item }">
@@ -81,22 +68,6 @@ function goToPerson(personId: string) {
 <style scoped>
 div {
   margin: 20px auto;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
-
-th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
-
-th {
-  background-color: #f2f2f2;
-  text-align: left;
 }
 
 p {
