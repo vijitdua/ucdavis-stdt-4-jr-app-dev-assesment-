@@ -32,6 +32,14 @@ export function getPersonById(id) {
     return inMemoryDatabase[id];
 }
 
+export function deletePersonById(id) {
+    if (!inMemoryDatabase[id]) {
+        throw new Error('Data not found.');
+    }
+    inMemoryDatabase[id] = null;
+    return true
+}
+
 /**
  *
  * @param {string} id - unique identifier of the person
@@ -55,5 +63,21 @@ export function addData(id, firstName, lastName, email, salary) {
         Salary: parseFloat(Number(salary).toFixed(2)),
     };
 
-    return true;
+    return inMemoryDatabase[id];
+}
+
+/**
+ * Updates an existing person in the database
+ */
+export function updatePerson(id, First_Name, Last_Name, Email, Salary) {
+    if (!inMemoryDatabase[id]) throw new Error('Person not found.');
+
+    if (First_Name) inMemoryDatabase[id].First_Name = First_Name;
+    if (Last_Name) inMemoryDatabase[id].Last_Name = Last_Name;
+    if (Email) inMemoryDatabase[id].Email = Email;
+    if (Salary !== undefined) {
+        if (Number(Salary) <= 0) throw new Error('Salary must be a positive number.');
+        inMemoryDatabase[id].Salary = parseFloat(Number(Salary).toFixed(2));
+    }
+    return inMemoryDatabase[id];
 }

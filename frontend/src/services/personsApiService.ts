@@ -32,11 +32,35 @@ export async function getPersonsList(limit: number = 10, skip: number = 0): Prom
 export async function getPersonById(id: string): Promise<Person> {
   try {
     const response = await axios.get(`http://localhost:3001/persons/${id}`);
-    console.log(`api response`)
-    console.log(response.data);
     return response.data;
   } catch (error) {
-    console.log(`Error occurred in getPersonsList: ${error}`);
+    throw error;
+  }
+}
+
+export async function updatePersonById(id: string, person: Person): Promise<Person> {
+  try{
+    const response = await axios.put(`http://localhost:3001/persons/${id}`, person);
+    return response.data;
+  }catch(error){
+    throw error;
+  }
+}
+
+export async function createPerson(person: Person): Promise<Person> {
+  try {
+    const response = await axios.post(`http://localhost:3001/persons`, person);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function deletePerson(id: string): Promise<true> {
+  try{
+    const response = await axios.delete(`http://localhost:3001/persons/${id}`);
+    return true;
+  }catch(error){
     throw error;
   }
 }
