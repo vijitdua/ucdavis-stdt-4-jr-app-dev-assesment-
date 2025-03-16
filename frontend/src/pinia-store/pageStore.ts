@@ -1,7 +1,7 @@
 import {defineStore} from 'pinia';
 import {ref} from 'vue';
-import type {Person} from "../services/personsApiService.ts";
-import {getPersonsList} from "../services/personsApiService.ts";
+import type {Person} from "@/services/personsApiService";
+import {getPersonsList} from "@/services/personsApiService";
 
 export const usePageStore = defineStore('pageStore', () => {
     const currentPage = ref<number>(1);

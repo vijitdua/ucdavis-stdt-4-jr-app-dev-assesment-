@@ -48,6 +48,9 @@ function goBack(){
           <v-list-item>
             <v-list-item-title><strong>Salary:</strong> ${{ personData?.Salary }}</v-list-item-title>
           </v-list-item>
+          <v-list-item>
+              <v-btn size="small" variant="tonal" @click="()=>router.push(`/edit/${personData?.Id}`)">✏️ Edit</v-btn>
+          </v-list-item>
         </v-list>
       </v-card-text>
 

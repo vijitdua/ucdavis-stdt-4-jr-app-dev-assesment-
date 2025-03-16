@@ -42,15 +42,22 @@ function goToPerson(personId: string) {
         :hide-default-footer="true"
     >
       <template v-slot:item="{ item }">
-        <tr @click="goToPerson(item.Id)" class="pointer-style">
-          <td>{{ item.Id }}</td>
-          <td>{{ item.First_Name }}</td>
-          <td>{{ item.Last_Name }}</td>
-          <td>{{ item.Email }}</td>
-          <td>{{ item.Salary }}</td>
+        <tr class="pointer-style">
+          <td @click="goToPerson(item.Id)">{{ item.Id }}</td>
+          <td @click="goToPerson(item.Id)">{{ item.First_Name }}</td>
+          <td @click="goToPerson(item.Id)">{{ item.Last_Name }}</td>
+          <td @click="goToPerson(item.Id)">{{ item.Email }}</td>
+          <td @click="goToPerson(item.Id)">{{ item.Salary }}</td>
+          <td>
+            <v-btn size="small" variant="tonal" @click="()=>router.push(`/edit/${item.Id}`)">✏️ Edit</v-btn>
+          </td>
         </tr>
       </template>
     </v-data-table>
+
+    <v-container class="center">
+      <v-btn color="primary" class="mb-4" @click="router.push('/add')">➕ Add New Person</v-btn>
+    </v-container>
 
     <v-container>
       <v-row justify="center">
