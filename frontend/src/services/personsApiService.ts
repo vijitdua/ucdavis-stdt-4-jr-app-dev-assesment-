@@ -8,14 +8,19 @@ export type Person = {
   Salary: string,
 }
 
+export type PersonsDataWithLength = {
+  data: Person[],
+  length: number
+}
+
 /**
  * Fetches (skip, limit + skip) persons from the persons API
  * @param limit the number of responses to fetch
  * @param skip the initial number of responses to skip
  */
-export async function getPersonsList(limit: number = 10, skip: number = 0): Promise<Person[]> {
+export async function getPersonsList(limit: number = 10, skip: number = 0): Promise<PersonsDataWithLength> {
   try {
-    const response = await axios.get<Person[]>('http://localhost:3001/persons', {
+    const response = await axios.get<PersonsDataWithLength>('http://localhost:3001/persons', {
       params: {limit, skip},
     });
     return response.data;
@@ -39,10 +44,10 @@ export async function getPersonById(id: string): Promise<Person> {
 }
 
 export async function updatePersonById(id: string, person: Person): Promise<Person> {
-  try{
+  try {
     const response = await axios.put(`http://localhost:3001/persons/${id}`, person);
     return response.data;
-  }catch(error){
+  } catch (error) {
     throw error;
   }
 }
@@ -57,10 +62,10 @@ export async function createPerson(person: Person): Promise<Person> {
 }
 
 export async function deletePerson(id: string): Promise<true> {
-  try{
+  try {
     const response = await axios.delete(`http://localhost:3001/persons/${id}`);
     return true;
-  }catch(error){
+  } catch (error) {
     throw error;
   }
 }

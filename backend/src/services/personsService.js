@@ -2,16 +2,20 @@ import {inMemoryDatabase} from "../models/personsModel.js";
 
 /**
  * Returns the data of every stored person
- * @returns {Object[]} - Array of record objects
- *   - {string} Id
- *   - {string} First_Name
- *   - {string} Last_Name
- *   - {string} Email
- *   - {number} Salary
+ * @returns {Object} - Object with .data[] records and .length total length
+ *   - {Object[]} Object.data
+ *   - {string} data[].Id
+ *   - {string} data[].First_Name
+ *   - {string} data[].Last_Name
+ *   - {string} data[].Email
+ *   - {number} data[].Salary
  *
  */
 export function getAllPersons(limit, skip) {
-    return Object.values(inMemoryDatabase).slice(Number(skip), Number(skip) + Number(limit));
+    return {
+        data: Object.values(inMemoryDatabase).slice(Number(skip), Number(skip) + Number(limit)),
+        length: Object.values(inMemoryDatabase).length
+    };
 }
 
 /**

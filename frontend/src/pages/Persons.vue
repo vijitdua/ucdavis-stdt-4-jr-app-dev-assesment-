@@ -5,7 +5,7 @@ import {storeToRefs} from "pinia";
 import {onMounted} from "vue";
 
 const pageStore = usePageStore();
-const {personsPage, loading, errorFetching, currentPage} = storeToRefs(pageStore);
+const {personsPage, loading, errorFetching, currentPage, numberOfPages} = storeToRefs(pageStore);
 
 onMounted(() => {
   pageStore.setPage(currentPage.value);
@@ -63,7 +63,7 @@ function goToPerson(personId: string) {
       <v-row justify="center">
         <v-col cols="8">
           <v-container class="max-width">
-            <v-pagination v-model="currentPage" :length="10" class="my-4" @update:model-value="(page) => pageStore.setPage(page)"/>
+            <v-pagination v-model="currentPage" :length="numberOfPages" class="my-4" @update:model-value="(page) => pageStore.setPage(page)"/>
           </v-container>
         </v-col>
       </v-row>
