@@ -64,7 +64,7 @@ function closeDialog() {
             <v-list-item-title><strong>Employee ID:</strong> {{ personData?.Id }}</v-list-item-title>
           </v-list-item>
           <v-list-item>
-            <v-list-item-title><strong>Email:</strong> ${{ personData?.Email }}</v-list-item-title>
+            <v-list-item-title><strong>Email:</strong> {{ personData?.Email }}</v-list-item-title>
           </v-list-item>
           <v-list-item>
             <v-list-item-title><strong>Salary:</strong> ${{ personData?.Salary }}</v-list-item-title>
