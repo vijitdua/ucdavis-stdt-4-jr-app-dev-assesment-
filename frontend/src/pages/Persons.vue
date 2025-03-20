@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import router from "../router.ts";
-import {usePageStore} from "../pinia-store/pageStore.ts";
+import {usePageStore} from "@/pinia-store/pageStore";
 import {storeToRefs} from "pinia";
-import {onMounted} from "vue";
+import {onMounted, ref} from "vue";
+import CreateOrUpdatePersonDialogue from "@/component/dialogue/CreateOrUpdatePersonDialogue.vue";
 
 const pageStore = usePageStore();
 const {personsPage, loading, errorFetching, currentPage, numberOfPages} = storeToRefs(pageStore);
@@ -19,6 +20,24 @@ const headers = [
   {title: "Salary", key: "Salary"},
 ];
 
+const dialogVisible = ref(false);
+const selectedPersonId = ref<string | undefined>(undefined);
+
+function openAddDialog() {
+  selectedPersonId.value = undefined;
+  dialogVisible.value = true;
+}
+
+function openEditDialog(id: string) {
+  selectedPersonId.value = id;
+  dialogVisible.value = true;
+}
+
+function closeDialog() {
+  dialogVisible.value = false;
+  selectedPersonId.value = undefined;
+}
+
 // Redirects you to the individual person page
 function goToPerson(personId: string) {
   router.push(`/person/${personId}`);
@@ -33,41 +52,50 @@ function goToPerson(personId: string) {
     <v-alert v-if="errorFetching" type="error" class="center" text="Failed to load data" icon="$error">
     </v-alert>
 
-    <v-data-table
-        v-else
+    <template v-else>
+      <v-data-table
         :headers="headers"
         :items="personsPage"
         item-value="Id"
         :loading="loading"
         :hide-default-footer="true"
-    >
-      <template v-slot:item="{ item }">
-        <tr class="pointer-style">
-          <td @click="goToPerson(item.Id)">{{ item.Id }}</td>
-          <td @click="goToPerson(item.Id)">{{ item.First_Name }}</td>
-          <td @click="goToPerson(item.Id)">{{ item.Last_Name }}</td>
-          <td @click="goToPerson(item.Id)">{{ item.Email }}</td>
-          <td @click="goToPerson(item.Id)">{{ item.Salary }}</td>
-          <td>
-            <v-btn size="small" variant="tonal" @click="()=>router.push(`/edit/${item.Id}`)">✏️ Edit</v-btn>
-          </td>
-        </tr>
-      </template>
-    </v-data-table>
+      >
+        <template v-slot:item="{ item }">
+          <tr class="pointer-style">
+            <td @click="goToPerson(item.Id)">{{ item.Id }}</td>
+            <td @click="goToPerson(item.Id)">{{ item.First_Name }}</td>
+            <td @click="goToPerson(item.Id)">{{ item.Last_Name }}</td>
+            <td @click="goToPerson(item.Id)">{{ item.Email }}</td>
+            <td @click="goToPerson(item.Id)">{{ item.Salary }}</td>
+            <td>
+              <v-btn size="small" variant="tonal" @click="openEditDialog(item.Id)">✏️ Edit</v-btn>
+            </td>
+          </tr>
+        </template>
+      </v-data-table>
 
-    <v-container class="center">
-      <v-btn color="primary" class="mb-4" @click="router.push('/add')">➕ Add New Person</v-btn>
-    </v-container>
+      <v-container class="center">
+        <v-btn color="primary" class="mb-4" @click="openAddDialog">➕ Add New Person</v-btn>
+      </v-container>
 
-    <v-container>
-      <v-row justify="center">
-        <v-col cols="8">
-          <v-container class="max-width">
-            <v-pagination v-model="currentPage" :length="numberOfPages" class="my-4" @update:model-value="(page) => pageStore.setPage(page)"/>
-          </v-container>
-        </v-col>
-      </v-row>
-    </v-container>
+      <v-container>
+        <v-row justify="center">
+          <v-col cols="8">
+            <v-container class="max-width">
+              <v-pagination v-model="currentPage" :length="numberOfPages" class="my-4"
+                            @update:model-value="(page) => pageStore.setPage(page)"/>
+            </v-container>
+          </v-col>
+        </v-row>
+      </v-container>
+
+      <!-- Create / Edit Person Dialog -->
+      <CreateOrUpdatePersonDialogue
+        :open="dialogVisible"
+        :close="closeDialog"
+        :personId="selectedPersonId"
+      />
+    </template>
 
   </v-container>
 </template>
@@ -89,14 +117,6 @@ button {
 
 .pointer-style {
   cursor: pointer;
-}
-
-.pagination-control {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 10px;
-  align-items: center;
 }
 
 .center {

@@ -3,6 +3,7 @@ import {onMounted, ref} from "vue";
 import {useRoute} from "vue-router";
 import {getPersonById, type Person} from "../services/personsApiService.ts";
 import router from "../router.ts";
+import CreateOrUpdatePersonDialogue from "@/component/dialogue/CreateOrUpdatePersonDialogue.vue";
 
 const route = useRoute();
 const personId = ref(route.params.id);
@@ -29,6 +30,26 @@ onMounted(async () => {
 function goBack(){
   router.push("/persons");
 }
+
+
+const dialogVisible = ref(false);
+const selectedPersonId = ref<string | undefined>(undefined);
+
+function openAddDialog() {
+  selectedPersonId.value = undefined;
+  dialogVisible.value = true;
+}
+
+function openEditDialog(id: string) {
+  selectedPersonId.value = id;
+  dialogVisible.value = true;
+}
+
+function closeDialog() {
+  dialogVisible.value = false;
+  selectedPersonId.value = undefined;
+}
+
 </script>
 
 <template>
@@ -49,7 +70,7 @@ function goBack(){
             <v-list-item-title><strong>Salary:</strong> ${{ personData?.Salary }}</v-list-item-title>
           </v-list-item>
           <v-list-item>
-              <v-btn size="small" variant="tonal" @click="()=>router.push(`/edit/${personData?.Id}`)">✏️ Edit</v-btn>
+              <v-btn size="small" variant="tonal" @click="()=>{personData?.Id? openEditDialog(personData.Id) : ()=>{}}">✏️ Edit</v-btn>
           </v-list-item>
         </v-list>
       </v-card-text>
@@ -64,6 +85,13 @@ function goBack(){
     <v-alert v-else-if="errorFetching" type="error" class="my-4">
       Failed to fetch data for employee ID {{ personId }}.
     </v-alert>
+
+    <!-- Create / Edit Person Dialog -->
+    <CreateOrUpdatePersonDialogue
+      :open="dialogVisible"
+      :close="closeDialog"
+      :personId="selectedPersonId"
+    />
 
   </v-container>
 </template>
