@@ -18,7 +18,6 @@ export const usePageStore = defineStore('pageStore', () => {
       let apiResponse = await getPersonsList(singlePageLimit, singlePageLimit * (currentPage.value - 1));
       personsPage.value = apiResponse.data;
       numberOfPages.value = Math.ceil(apiResponse.length / singlePageLimit);
-      console.log(numberOfPages);
     } catch (error) {
       errorFetching.value = true;
     }

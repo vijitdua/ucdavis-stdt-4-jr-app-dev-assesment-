@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {onMounted, ref, watch, watchEffect} from 'vue';
-import {createPerson, getPersonById, type Person, updatePersonById} from "@/services/personsApiService";
+import {createPerson, deletePerson, getPersonById, type Person, updatePersonById} from "@/services/personsApiService";
 
 const props = defineProps<{
   open: boolean;
@@ -28,6 +28,18 @@ function handleClose() {
   };
   isEditMode.value = false;
   errorMessage.value = '';
+}
+
+async function handleDelete() {
+  if (!form.value.Id) return;
+  loading.value = true;
+  try {
+    await deletePerson(form.value.Id);
+    handleClose();
+  } catch (e) {
+    errorMessage.value = 'Failed to delete person.';
+  }
+  loading.value = false;
 }
 
 const isEditMode = ref<boolean>(false);
@@ -127,6 +139,14 @@ async function handleSubmit() {
             required
           />
           <v-card-actions>
+            <v-btn
+              v-if="isEditMode"
+              color="error"
+              class="mt-4 ml-2"
+              @click="handleDelete"
+            >
+              Delete Record
+            </v-btn>
             <v-btn type="submit" :disabled="!valid" color="primary" class="mt-4">
               {{ isEditMode ? 'Update' : 'Create' }}
             </v-btn>
