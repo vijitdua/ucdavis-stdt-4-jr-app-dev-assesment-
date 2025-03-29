@@ -5,12 +5,18 @@ import {
     postPersonController,
     updatePersonController
 } from "../controller/personsController.js";
+import {
+    getQuerySchema,
+    postBodySchema,
+    putBodySchema,
+} from "../schemas/personSchemas.js";
+import {validate} from "../middleware/jsonSchemaValidationMiddleware.js";
 const router = Router();
 
-router.get('/', getPersonsController);
+router.get('/', validate(getQuerySchema, 'query'), getPersonsController);
 router.get('/:id', getPersonsController);
-router.post('/', postPersonController);
-router.put('/:id', updatePersonController);
+router.post('/', validate(postBodySchema, 'body'), postPersonController);
+router.put('/:id', validate(putBodySchema, 'body'), updatePersonController);
 router.delete('/:id', deletePersonController);
 
 export default router;

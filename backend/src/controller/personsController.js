@@ -70,8 +70,6 @@ export async function updatePersonController(req, res) {
     try {
         const { id } = req.params;
         const { First_Name, Last_Name, Email, Salary } = req.body;
-        if(!id) return res.status(401).json({error: `id is required`});
-        if(!First_Name || !Last_Name || !Email || !Salary) return res.status(401).json({error: `atleast one body param is required`});
         const person = updatePerson(id, First_Name, Last_Name, Email, Salary);
         return res.status(200).json(person);
     } catch (error) {
